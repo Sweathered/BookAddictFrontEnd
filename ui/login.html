@@ -1,0 +1,46 @@
+<div class="container-fluid">
+	<br />
+    <br />
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 text-center">
+              <h1 style="">bookaddict <small style="color: teal; margin-left: -2.5%;">.com</small></h1>
+      </div>
+      <div class="col-lg-4"></div>
+    </div>
+    <br />
+	<div class="alert alert-warning" role="alert" ng-show="validUser == 'false'">
+		Invalid Email ID or Password.
+	</div>
+    <div class="row" style="height: 500px;">
+	    <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">Welcome to <b><i>bookaddict.com!</i></b></div>
+              <div class="panel-body text-center">
+              	<form>
+                	<br />
+                	<div class="input-group">
+                      <span class="input-group-addon">Email ID</span>
+                      <input type="text" class="form-control" placeholder="" ng-model="email">
+                    </div>
+                    <br />
+                    <div class="input-group">
+                      <span class="input-group-addon">Password</span>
+                      <input type="password" class="form-control" placeholder="" ng-model="password">
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary" ng-click="authenticate()">
+					<span class="glyphicon glyphicon-log-in"></span> &nbsp;Login
+					</button>&nbsp;&nbsp;&nbsp;
+					<a type="button" class="btn btn-default" href="#/signUp"><span class="glyphicon glyphicon-user"></span> &nbsp;Create an Account</a>
+                </form>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    <div class="row text-center footer">
+    	<h6>{{copyrightsText}}</h6>
+    </div>
+</div>

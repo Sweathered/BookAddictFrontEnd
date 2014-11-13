@@ -1,0 +1,252 @@
+<div id="content" class="container-fluid">
+	<div class="row">
+    	<div class="col-lg-10 vcenter">
+        	<h1 style="">bookaddict<small style="color: teal;">.com</small></h1>
+        </div><!--
+		--><div class="col-lg-2 vcenter">
+            <div class="dropdown" style="margin-top: 10%; margin-left: 10%;">
+			  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+				{{loggedInUser}}
+				<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#/favourites"><span class="glyphicon glyphicon-heart"></span> &nbsp;Favourites</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#/read"><span class="glyphicon glyphicon-book"></span> &nbsp;To Read</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#/profile"><span class="glyphicon glyphicon-user"></span> &nbsp;Profile</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#/changePassword"><span class="glyphicon glyphicon-cog"></span> &nbsp;Change Password</a></li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-log-out"></span> &nbsp;Sign Out</a></li>
+			  </ul>
+			</div>
+        </div>
+	</div>
+	<br />
+	<div class=row">
+        <div class="col-lg-12">
+			<form class="form-inline" name="searchForm">
+			  <div class="">
+				<input id="searchKey" type="text" class="form-control" ng-model="bookName" placeholder="Book Name" size="60">
+				<input id="searchKey" type="text" class="form-control" ng-model="isbn" placeholder="ISBN" size="60">
+				<button class="btn btn-default" type="submit" ng-click="doSearch()">Search</button>
+			  </div>
+			</form>
+        </div>
+    </div>
+	
+	<div id="searchDetails" class="container-fluid" style="padding-left: 10px">
+         <h2 id="hdr"></h2>
+         <form id="myForm" class="form-inline form-search" name="myForm" method="POST">
+			<div class="well" ng-show="totalResults && bookDetailsPage == false" style="overflow: hidden;">
+				<div class="row">
+					<div class="col-lg-9">
+						<label style="">
+							<span ng-show="totalResults && both">
+								Found &quot;{{totalResults}}&quot; results for book &quot;{{bookSearch}}&quot and ISBN &quot;{{isbnSearch}}&quot;
+							</span>
+							<span ng-show="totalResults && bookSearch && !both">
+								Found &quot;{{totalResults}}&quot; results for book &quot;{{bookSearch}}&quot;
+							</span>
+							<span ng-show="totalResults && isbnSearch && !both">
+								Found &quot;{{totalResults}}&quot; results for ISBN &quot;{{isbnSearch}}&quot;
+							</span>
+						</label>
+					</div>
+					<div class="col-lg-3">
+						<label style="">
+							Sort by: 
+							<select id="option" class="form-control" ng-model="orderProp">
+								<option value="volumeInfo.authors">Alphabetical by Author</option>
+								<option selected="selected" value="volumeInfo.title">Alphabetical by Title</option>
+							</select>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="well" ng-show="totalResults==0 && noSearch==false">
+				<label>No results found for your search</label>
+			</div>
+			<div class="alert alert-warning" role="alert" ng-show="userRestricted == 'y'">
+				<p><span class="glyphicon glyphicon-warning-sign"></span> &nbsp;You have been restricted to perform any search. Following might be the reasons: </p>
+				<p> 1. You have exhausted your API_USAGE_LIMIT </p>
+				<p> 2. Restricted by ADMIN </p>
+			</div>
+         </form>
+		 <div class="table-responsive">
+         <table id="resultsTbl" class="table table-hover" ng-show="totalResults && bookDetailsPage == false">
+            <tbody>
+               <tr ng-repeat="item in bookResults | orderBy:orderProp">
+                  <td style="padding: 1% 0% 0% 1.5%;"><a ng-href="{{item.volumeInfo.infoLink}}" target="_blank"><img ng-src=
+                     "{{item.volumeInfo.imageLinks.thumbnail}}" /></a></td>
+                  <td style="padding-left: 1.5%;">
+					 <p><a id="{{item.id}}" style="font-size: 1.2em;" href="" ng-click="showBookDetails(item.id)">{{item.volumeInfo.title}}</a></p>
+                     <p><b>Author: </b> {{item.volumeInfo.authors | authorFilter}}</p>
+                     <p><b>Publisher: </b> {{item.volumeInfo.publisher}}, {{item.volumeInfo.publishedDate | dateFilter}}</p>
+					 <p><b>Cost: </b> {{item.saleInfo.retailPrice.currencyCode}} {{item.saleInfo.retailPrice.amount | costFilter}}</p>
+					 <p><b>Snippet: </b> {{item.searchInfo.textSnippet | snippetFilter}}</p>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+		 </div>
+      </div>
+	  
+	  <div class="row text-center" ng-show="totalResults && bookDetailsPage == false">
+		<ul class="pagination" id="pagination">
+		  <li style="cursor: pointer;" ng-hide="startRange == 1"><a href="" ng-click="prev()">&laquo;</a></li>
+		  <li style="cursor: pointer;" ng-show="startRange == 1"><a href="">&laquo;</a></li>
+		  <li ng-repeat="index in nop" style="cursor: pointer;" ng-class="'active'+index">
+			<a href="" ng-click="setCurrentPage(index)" onclick="$('#pagination li').removeClass('active'); $('#pagination li').removeClass('active1'); $(this).parent().addClass('active'); $(document).scrollTop(0);">{{index}}</a>
+		  </li>
+		  <li style="cursor: pointer;" ng-hide="endRange == numberOfPages"><a href="" ng-click="next()">&raquo;</a></li>
+		  <li style="cursor: pointer;" ng-show="endRange == numberOfPages"><a href="">&raquo;</a></li>
+		</ul>
+	  </div>
+	  
+	  
+	  
+	<div id="bookDetails" class="container-fluid" style="padding-left: 10px" ng-show="bookDetailsPage == true">
+        <div class="well" style="overflow: hidden;">
+		<div class="row">
+			<div class="col-lg-12 text-right">
+				<button type="button" class="btn btn-success" ng-click="backToResultsPage()">Back to Search Results</button>
+			</div>
+		</div>
+		</div>
+
+		<div class="alert alert-success" role="alert" ng-show="addedToFavourites == true">
+			<span class="glyphicon glyphicon-ok" style="color: green;"></span> &nbsp;Added to your "Favourites" successfully.
+		</div>
+		<div class="alert alert-warning" role="alert" ng-show="addedToFavourites == false">
+			<span class="glyphicon glyphicon-warning-sign" style="color: red;"></span> &nbsp;This book is already in your "Favourites"
+		</div>
+		<div class="alert alert-success" role="alert" ng-show="addedToRead == true">
+			<span class="glyphicon glyphicon-ok" style="color: green;"></span> &nbsp;Added to your "To Read" successfully.
+		</div>
+		<div class="alert alert-warning" role="alert" ng-show="addedToRead == false">
+			<span class="glyphicon glyphicon-warning-sign" style="color: red;"></span> &nbsp;This book is already in your "To Read"
+		</div>
+		<div class="row">
+			<div class="col-lg-4 text-center">
+				<img ng-src="{{bookDetails.volumeInfo.imageLinks.small}}" />
+			</div>
+			<div class="col-lg-8 text-left">
+				<p class="title">{{bookDetails.volumeInfo.title}} <small class="subtitle">{{bookDetails.volumeInfo.subtitle | subtitleFilter}}</small></p>
+                
+				<div class="row">
+					<div class="col-lg-6 text-left">
+						<p style="float: left"><b>Average Rating: </b></p>
+						<div class='rating_bar' style="margin-top: 1px; margin-left: 30%;">
+							<div class='view_rating' style='{{getStars(bookDetails.averageRating)}}'>
+							</div>
+						</div>
+						<p style="float: left; margin-top: -5%; margin-left: 40%;">({{bookDetails.averageRating}} stars)</p>
+					</div>
+					<div class="col-lg-1" style="padding-top: 3px;">
+					</div>
+				</div>
+				
+				<div class="row" ng-show="userRating != null">
+					<div class="col-lg-6 text-left">
+						<p style="float: left"><b>Your Rating: </b></p>
+						<div class='rating_bar' style="margin-top: 1px; margin-left: 30%;">
+							<div class='view_rating' style='{{getStars(userRating)}}'>
+							</div>
+						</div>
+						<p style="float: left; margin-top: -5%; margin-left: 45.5%;">({{userRating}} stars)</p>
+					</div>
+					<div class="col-lg-1" style="padding-top: 3px;">
+					</div>
+				</div>
+				
+				<p><b>Author: </b> {{bookDetails.volumeInfo.authors | authorFilter}}</p>
+                <p><b>Publisher: </b> {{bookDetails.volumeInfo.publisher}}, {{bookDetails.volumeInfo.publishedDate | dateFilter}} </p>
+				<p><b>ISBN: </b> {{bookDetails.volumeInfo.industryIdentifiers[0].identifier}}, {{bookDetails.volumeInfo.industryIdentifiers[1].identifier}} </p>
+				<p><b>Cost: </b> {{bookDetails.saleInfo.retailPrice.currencyCode}} {{bookDetails.saleInfo.retailPrice.amount | costFilter}} </p>
+				<p><b>Description: </b> {{bookDetails.volumeInfo.description | descFilter}}</p>
+				
+				<br /> <br />
+				<a href="https://play.google.com/store/books/details?id={{bookDetails.id}}&rdid=book-{{bookDetails.id}}&rdot=1&source=gbs_atb&pcampaignid=books_booksearch_atb" class="btn btn-primary" style="margin-right: 2%;" target="_blank" ng-show="bookDetails.saleInfo.saleability == 'FOR_SALE'">
+				<span class="glyphicon glyphicon-credit-card"></span> &nbsp;Buy this book
+				</a>
+				<button type="button" class="btn btn-success" style="margin-right: 2%;" ng-click="addToFav(bookDetails.id)"><span class="glyphicon glyphicon-heart"></span> &nbsp;Add to "Favourites"</button>
+				<button type="button" class="btn btn-success" style="margin-right: 2%;" ng-click="addToRead(bookDetails.id)"><span class="glyphicon glyphicon-book"></span> &nbsp;Mark "To Read"</button>
+				<button class="btn btn-info" data-toggle="modal" data-target="#myModal"  style="margin-right: 2%;" ng-show="bookDetails.accessInfo.pdf.acsTokenLink || bookDetails.accessInfo.epub.acsTokenLink">
+				<span class="glyphicon glyphicon-download-alt"></span> &nbsp;Get Sample
+				</button>
+				<a href="ui/preview.html?{{bookDetails.id}}" target="_blank" ng-show="bookDetails.accessInfo.embeddable == true"><img src="images/gbs_preview_button.png" /></a>
+			</div>
+
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">Sample type</h4>
+				  </div>
+				  <div class="modal-body text-center">
+					<h5>Please select a sample type</h5><br />
+					<a href="{{bookDetails.accessInfo.pdf.acsTokenLink}}" class="btn btn-default" ng-show="bookDetails.accessInfo.pdf.acsTokenLink" style="margin-right: 2%;" onclick="getSample(this); return false;">PDF</a>
+					<a href="{{bookDetails.accessInfo.epub.acsTokenLink}}" class="btn btn-default" ng-show="bookDetails.accessInfo.epub.acsTokenLink"  onclick="getSample(this); return false;">EPUB</a>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-lg-4">
+			</div>
+			<div class="col-lg-8">
+				<div style="font-family: Calibri; font-size: 32px;">
+					<span class="glyphicon glyphicon-comment" style="margin-right: 1.2%; margin-top: 1.3%; float: left;"></span><p>Reviews</p>
+				</div>
+				<div class="row" ng-show="noReviews == true">
+					<div class="col-lg-3">
+						<p><i>No Reviews Found</i></p>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-striped" ng-show="noReviews == false">
+						<tbody>
+							<tr ng-repeat="reviewItem in reviews">
+								<td>
+									<p><strong style="font-size: 18px; color: teal;">{{reviewItem.user}}</strong> &nbsp;on&nbsp; <font style="color: #a9a9a9;">{{reviewItem.date}}</font></p>
+									<p>{{reviewItem.review}}</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br /><br />
+					<table>
+						<tr>
+							<form role="form">
+								<div class="form-group">
+									<h2 style="font-family: Calibri; font-size: 32px; border-bottom: 1px solid #aaa;">Leave a Review</h2>
+									<div id="reviewRating"></div>
+									<div class="alert alert-warning" role="alert" id="alert" ng-show="reviewError == true">
+										Please Rate this book.
+									</div>
+									<label><p>Rate this book <font style="color: red">&nbsp;*</font></p></label>
+									<div class="row">
+										<star-rating rating-value="rating" max="5" on-rating-selected="rateFunction(rating)" controller="starRatingController" class="col-lg-2" style="margin-left: 1.5%;"></star-rating>
+										<div class="col-lg-1" style="margin-top: 0.1%; margin-left: -5%;">{{newUserRating}} stars</div>
+									</div>
+									<br/>
+									<label><p>Review Comments <small>(optional)</small></p></label>
+									<textarea class="form-control" rows="3" ng-model="review" id="review"></textarea>
+								</div>
+								<button type="submit" class="btn btn-primary" style="margin-right: 2%;" ng-click="starRatingController.updateStars(0, 'submit')">Submit</button>
+								<button type="button" class="btn btn-default" ng-click="starRatingController.updateStars(0, 'cancel')" onclick="$('#review').val(null);">Cancel</button>
+							</form>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+    </div>
+	<br/ ><br />
+	<br/ ><br />
+    <div class="row text-center footer">
+    	<h6>{{copyrightsText}}</h6>
+    </div>
+</div>

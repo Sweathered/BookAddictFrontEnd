@@ -1,0 +1,110 @@
+body, html {
+    height: 100%;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #f4f2f2;
+	border: 1px solid #ddd;
+}
+.pagination > .active1 > a,
+.pagination > .active1 > span,
+.pagination > .active1 > a:hover,
+.pagination > .active1 > span:hover,
+.pagination > .active1 > a:focus,
+.pagination > .active1 > span:focus {
+  z-index: 2;
+  color: #fff;
+  cursor: default;
+  background-color: #428bca;
+  border-color: #428bca;
+}
+.title {
+	color: teal;
+	font-family: Calibri;
+	font-size: 1.5em!important;
+}
+.subtitle {
+	color: #aaa;
+	font-family: Calibri;
+	font-size: 0.7em!important;
+}
+p {
+	font-family: Calibri;
+	font-size: 1.1em!important;
+	text-justify: auto;
+	/*font-family: 'Trebuchet MS';*/
+}
+
+.rating_bar {
+    /*this class creats 5 stars bar with empty stars */
+    /*each star is 16 px, it means 5 stars will make 80px together */
+    /*width: 80px;*/
+	width: 110px;
+    /*height of empty star*/
+    /*height: 16px;*/
+	height: 20px;
+    /*background image with stars */
+    background: url(../images/stars1.png);
+    /*which will be repeated horizontally */
+    background-repeat: repeat-x;
+    /* as we are using sprite image, we need to position it to use right star, 
+    //0 0 is for empty */
+    background-position: 0 0;
+    /* align inner div to the left */
+    text-align: left;
+}
+.view_rating {
+    /* height of full star is the same, we won't specify width here */
+    /*height: 16px;*/
+	height: 20px;
+    /* background image with stars */
+    background: url(../images/stars1.png);
+    /* now we will position background image to use 16px from top, 
+    //which means use full stars */
+    background-position: 0 -23px;
+    /* and repeat them horizontally */
+    background-repeat: repeat-x;
+}
+
+#viewerCanvas {
+	width: 90%;
+	height: 99%;
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	/*overflow: hidden;*/
+}
+
+.rating{
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+.rating li {
+    padding: 1px;
+    color: #a9a9a9;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+    /*&.filled {
+      color: #fd0; //#21568b
+    }*/
+}
+.rating li.filled {
+	color: #fd0; //#21568b
+}
+.rating li.black {
+	color: #000; //#21568b
+}
