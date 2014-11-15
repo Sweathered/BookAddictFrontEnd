@@ -1,0 +1,154 @@
+<h1>Book Addict API Documentation</h1>
+
+<div id="accordion">
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> Search</h3>
+	<div>
+		<p>
+			Searches for a book based upon title and isbn#. Pagination is available by include values for the start index and maxResults.
+		</p>
+		<p>
+			The data return includes... 
+		</p>
+	</div>
+	
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> Search/{bookID}</h3>
+	<div>
+		<p>
+			Searches for a book based upon the bookID
+		</p>
+		<p>
+			The data return includes... 
+		</p>
+	</div>
+	
+	<h3><button type="button" class="btn btn-primary btn-xs">POST</button> Register</h3>
+	<div>
+		<p>Registers a user based upon the supplied fname, lname, email, password</p>
+		<p>
+			Response:
+			<pre>
+{
+	registered: (boolean), whether registration was successful
+	email: (String), whether the email passed was valid or invalid
+}
+			</pre>
+			<label>fname:
+				<input type="text" placeholder="first name"></input>
+			</label>
+			<br/>
+			
+			<label>lname:
+				<input type="text" placeholder="last name"></input>
+			</label>
+			<br/>
+			
+			<label>email:
+				<input type="text" placeholder="email address"></input>
+			</label>
+			<br/>
+			
+			<label>password:
+				<input type="password" placeholder="password"></input>
+			</label>
+			<br/>
+
+			<input type="submit" value="Try it now!" ng-click="createAccount()"></input>
+
+			<pre ng-show="createAccountResponse != null">
+				<p ng-bind="createAccountResponse">
+				</p>
+			</pre>
+		</p>
+	</div>
+	
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> Auth</h3>
+	<div>
+		<p>Authenticates a user based upon the supplied email and password</p>
+		<p>
+			Response
+			<pre>
+{
+"validUser" : (boolean) whether the user is valid or not
+"userDetails" : {
+	"fname" : (string) first name of user,
+	"lname" : (string) last name of user,
+	"apiKey" : (string) api key,
+	"userType" : (string) type: Limited or Premium,
+	"isRestricted" : (string) n or y
+	}
+}
+			</pre>
+		</p>
+	</div>
+
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> Profiles</h3>
+	<div>
+		<p>Gets profile information for a given user</p>
+		<p>
+			Response
+			<pre>
+{
+	"fname": (string) first name of user,
+	"lname": (string) last name of user,
+	"apiKey": (string) apikey,
+	"userType": (string) type: Limited or Premium,
+	"email": (string) email of user
+}
+			</pre>
+		</p>
+	</div>
+	
+	<h3><button type="button" class="btn btn-warning btn-xs">PUT</button> changePassword</h3>
+	<div>
+		<p>Changes password for a user</p>
+		<p>
+			Response
+			<pre>
+{
+  "success" : boolean depending on success of operation
+}
+			</pre>
+		</p>
+	</div>
+
+	<h3><button type="button" class="btn btn-warning btn-xs">PUT</button> updateUserDetails</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-warning btn-xs">PUT</button> updateUserType</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-warning btn-xs">PUT</button> restrictUser</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-primary btn-xs">POST</button> fav_read/add</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> fav_read</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-danger btn-xs">DELETE</button> fav_read/remove</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-primary btn-xs">POST</button> reviews/add</h3>
+	<div>
+
+	</div>
+
+	<h3><button type="button" class="btn btn-success btn-xs">GET</button> logs</h3>
+	<div>
+
+	</div>
+
+</div>

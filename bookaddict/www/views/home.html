@@ -1,0 +1,19 @@
+
+<div class="jumbotron">
+  <h1 ng-bind="title"></h1>
+  <p ng-bind="welcomeMsg" class="lead"></p>
+</div>
+
+<div class="row marketing">
+	<ul class="list-unstyled">
+		<li><button class="btn btn-primary btn-demo" ng-click="takePicture()">Take Picture</button></li>
+		<li><button class="btn btn-primary btn-demo" ng-click="scanBarCode()">Scan Bar Code</button></li>
+	</ul>
+
+	<!-- <p ng-bind="cameraPic"></p> -->
+	<h2>Captured Picture</h2>
+	<p ng-show="cameraPic != 'None'"><img ng-src="{{cameraPic}}"></p>
+
+	<h2>Barcode</h2>
+	<p ng-bind="barcode"></p>
+</div>

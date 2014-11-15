@@ -45,6 +45,10 @@ bookApp.config(function($routeProvider, $locationProvider) {
       templateUrl: 'ui/admin/changePassword.html',
       controller: 'adminChangePasswordController'
     })
+    .when('/documentation', {
+      templateUrl: 'ui/docs.html',
+      controller: 'docsController'
+    })
 });
 
 /*
